@@ -40,13 +40,13 @@ class Utils:
 
     @staticmethod
     def _pubKeyHash(key):
-        pubSHA = hlib.sha256(key).hexdigest()
+        pubSHA = hlib.sha256(key.encode('utf-8')).hexdigest()
         pub = hlib.new('ripemd160')
-        pub.update(pubSHA)
+        pub.update(pubSHA.encode('utf-8'))
         return str(pub.hexdigest())
 
     @staticmethod
     def _checksum(data):
-        return str(hlib.sha256(hlib.sha256(data).hexdigest()).hexdigest())
+        return str(hlib.sha256(hlib.sha256(data.encode('utf-8')).hexdigest().encode('utf-8')).hexdigest())
 
     

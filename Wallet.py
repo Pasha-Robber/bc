@@ -3,6 +3,7 @@ from Utils import Utils
 import ecdsa as ec
 import binascii as ba
 import hashlib as hlib
+import base58 as b58
 
 class Wallet:
     pubKey = None
@@ -19,7 +20,7 @@ class Wallet:
     def getAddress(self):
         pubKeyHash = Utils._pubKeyHash(self.pubKey)
         versionPayload = ''.join([pubKeyHash])
-        checksum = Utils.checksum(versionPayload)
+        checksum = Utils._checksum(versionPayload)
         fullPayload = ''.join([versionPayload, checksum])
-        address = Utils._base58Encode(fullPayload)
+        address = b58.b58encode(fullPayload)
         return str(address)
