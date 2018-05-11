@@ -22,6 +22,7 @@ class CLI(cmd.Cmd):
         return KeyboardInterrupt
 
     def do_createBc(self, args):
+        """ ---> createBc [address] - задает начало цепочки для адреса [address] <--- """
         bc = Blockchain()
         bc.createBC(args)
 
@@ -39,6 +40,7 @@ class CLI(cmd.Cmd):
             print('Нехватает аргументов!')
     
     def do_send(self, args):
+        """ ---> send [address from] [address to] [amount] - передача целого количества монет [amount] от [... from] к [... to] <--- """
         args = args.split(' ')
         bc = Blockchain()
         tx = Transaction()
