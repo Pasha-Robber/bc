@@ -22,9 +22,9 @@ class Blockchain:
         cbtx = Transaction()
         cbtx.newCoinbase(address)
         genesys = Block(cbtx, '')
-        self.blocksDb.write(genesys.Hash, genesys)
-        self.blocksDb.write('l', genesys.Hash)
-        self.tip = genesys.Hash
+        self.blocksDb.write(genesys.hash, genesys)
+        self.blocksDb.write('l', genesys.hash)
+        self.tip = genesys.hash
 
     def findUnsTX(self, address):
         a = False
@@ -33,7 +33,7 @@ class Blockchain:
         bcIter = BlockIterator(self.tip, self.blocksDb)
         while True:
             block = bcIter.next()
-            for tx in block.Transaction:
+            for tx in block.transaction:
                 txID = tx.ID
                 for outID in tx.outputs:
                     if txID in STXO:
@@ -54,7 +54,7 @@ class Blockchain:
                             if txid not in STXO:
                                 STXO.update({txid: list()})
                             STXO[txid].append(tx.inputs[inpID]['outID'])
-            if block.PrevHash == '':
+            if block.prevHash == '':
                 break
         return UTX
 
@@ -89,22 +89,19 @@ class Blockchain:
                     UTXO.append(tx.outputs[outID])
         return UTXO
 
-    def addBlock(self, Transaction):
+    def addBlock(self, transaction):
         prevHash = self.blocksDb.read('l')
-        block = Block(Transaction, prevHash)
-        self.blocksDb.write(block.Hash, block)
-        self.blocksDb.write('l', block.Hash)
-        self.tip = block.Hash
+        block = Block(transaction, prevHash)
+        self.blocksDb.write(block.hash, block)
+        self.blocksDb.write('l', block.hash)
+        self.tip = block.hash
 
     def printChain(self):
         iter = BlockIterator(self.tip, self.blocksDb)
         while 1:
             bl = iter.next()
-            if bl == None:
-                break
-            if bl.Valid:
-                print('----------')
-                print('Hash: ' + bl.Hash)
-                print('Date: ' + time.ctime(bl.Timestamp))
-            if bl.PrevHash == '':
+            print('----------')
+            print('Hash: ' + bl.hash)
+            print('Date: ' + time.ctime(bl.timestamp))
+            if bl.prevHash == '':
                 break

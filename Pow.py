@@ -13,9 +13,9 @@ class PoW:
 
     def prepareData(self, nonce):
         data = list()
-        data.append(self.block.PrevHash)
+        data.append(self.block.prevHash)
         data.append(self.block.hashTX())
-        data.append(hex(self.block.Timestamp))
+        data.append(hex(self.block.timestamp))
         data.append(hex(int(self.tb)))
         data.append(hex(int(nonce)))
         return ('').join(data)
@@ -33,11 +33,10 @@ class PoW:
             else:
                 nonce += 1
 
-        return (
-         nonce, hash)
+        return (nonce, hash)
 
     def isValid(self):
-        data = self.prepareData(self.block.Nonce)
+        data = self.prepareData(self.block.nonce)
         hash = str(sha256(data.encode('utf-8')).hexdigest())
         hashInt = int(hash, 16)
         if hashInt < self.target:

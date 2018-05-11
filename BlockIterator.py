@@ -13,7 +13,7 @@ class BlockIterator:
     def next(self):
         if self.db.exists(self.currentHash):
             block = self.db.read(self.currentHash)
-            self.currentHash = block.PrevHash
+            self.currentHash = block.prevHash
             return block
         else:
             return None
